@@ -2,6 +2,13 @@
 const {
   Model
 } = require('sequelize');
+
+//Require Bcrypt
+const bcrypt = require('bcrypt');
+
+// Import SALT 
+const { SALT } = require('../config/serverConfig');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -23,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     } ,
     password:{
-      tyep:DataTypes.STRING,
+      type:DataTypes.STRING,
       allowNull:false,
       validate:{
         len:[3,30] // Length of pwd should be between 3 to 30
@@ -33,5 +40,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeCreate( (user) => {
+    const encryptedPassword = bcrypt.hashSync(user.password,SALT);
+    user.password = encryptedPassword; // here we write user instead of User as the argumnet is user and that is the row that will be added 
+  })
+  
+
   return User;
 };
