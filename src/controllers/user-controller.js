@@ -46,7 +46,30 @@ const signIn = async (req,res) =>{
     }
 }
 
+// To check if the incoming frotend req is authenticated request or not 
+const isAuthenticated = async (req,res) =>{
+    try {
+       const token = req.headers['x-access-token'];   // x-access-token is the name of the key with which we send out token from headers 
+       const response = userService.isAuthenticated(token);
+       return res.status(200).json({
+        success:true,
+        err:{},
+        data : response ,
+        message: "User is Authenticated and token is valid"
+       })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+         message:"Something went wrong",
+         data:{},
+         success:false,
+         err:error
+        })
+    }
+}
+
 module.exports = {
     create,
-    signIn
+    signIn,
+    isAuthenticated
 }

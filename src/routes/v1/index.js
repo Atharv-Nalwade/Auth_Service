@@ -16,4 +16,15 @@ router.post(
     UserController.signIn
 );
 
+router.get(
+    '/isAuthenticated',
+    UserController.isAuthenticated
+)
+
+router.get(
+    '/isAuthenticated',
+    UserController.isAuthenticated
+)
+
+
 module.exports = router;

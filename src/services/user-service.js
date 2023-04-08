@@ -34,12 +34,31 @@ class UserService{
             }
 
             // 3-> If pwd match create a token and send it to the user
-            const newJWT = this.createToken({ email: user.email , id: user.id });
+            const newJWT = this.createToken({ email: user.email , id: user.id }); // createToken expects one obj. that why we wraop our email and id inside an obj
             return newJWT;
-            
+
         } catch (error) {
             console.log("Something went wrong in sign up process", error);
             throw(error)
+        }
+    }
+
+    async isAuthenticated(token){
+        try {
+            const response = this.verifyToken(token); //isTokenVerfied will be having email and id
+            if(!response){
+                throw {error:"Invalid token"}
+            }
+
+            const user = await this.userRepository.getById(response.id);
+            if(!user){
+                throw {error:"No user with corresponding token exists"}
+            }
+
+            return user.id;
+        } catch (error) {
+            console.log("Something went wrong in auth process", error);
+            throw(error);
         }
     }
 
