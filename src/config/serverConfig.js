@@ -6,5 +6,6 @@ dotenv.config();
 
 module.exports = {
     PORT: process.env.PORT,
-    SALT: bcrypt.genSaltSync(10) // Generate automtaic salt with salrounds at 10
+    SALT: bcrypt.genSaltSync(10), // Generate automtaic salt with salrounds at 10
+    JWT_KEY:process.env.JWT_KEY
 }
