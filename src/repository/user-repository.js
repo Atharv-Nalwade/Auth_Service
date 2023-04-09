@@ -1,4 +1,4 @@
-const { User } = require('../models/index');
+const { User, Role } = require('../models/index');
 
 class UserRepository{
 
@@ -50,6 +50,22 @@ class UserRepository{
         } catch (error) {
             console.log("Something went wrong in repositry layer");
              throw(error);
+        }
+    }
+
+    // So, this function is checking whether the user with the given userId has the "ADMIN" role or not
+    async isAdmin(userId){
+        try {
+            const user = await User.findByPk(userId);
+            const adminRole = await Role.findOne({
+                where:{
+                    name:"ADMIN"
+                }
+            })
+            return user.hasRole(adminRole);
+        } catch (error) {
+            console.log("Something went wrong in repositry layer");
+            throw(error);
         }
     }
 
